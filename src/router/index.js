@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import store from '@/store/index.js' // 引入状态管理
+import store from '@/store/index.js'
 import { asyncRouterMap } from './router.config.js'
 Vue.use(VueRouter)
 
@@ -11,7 +11,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  store.commit('changeBreadcrumb', to.path)
+  store.dispatch('getCurrentPath', to.path) // 获取当前路径
   next()
 })
 

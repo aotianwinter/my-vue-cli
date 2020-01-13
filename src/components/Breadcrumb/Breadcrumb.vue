@@ -3,7 +3,7 @@
     <el-breadcrumb-item>
       Home
     </el-breadcrumb-item>
-    <template v-for="(item, index) in $store.state.breadcrumb">
+    <template v-for="(item, index) in breadcrumbList">
       <el-breadcrumb-item v-if="breadcrumbObj[item]" :key="index">
         {{ breadcrumbObj[item] }}
       </el-breadcrumb-item>
@@ -11,16 +11,23 @@
   </el-breadcrumb>
 </template>
 <script>
+import { mixin } from '@utils/mixin'
 import { breadcrumbGenerate } from './breadcrumbHandle.js' // 引入路由处理
 export default {
+  mixins: [mixin],
   data () {
     return {
       breadcrumbObj: {}
     }
   },
+  computed: {
+    breadcrumbList () {
+      return this.currentPath.substr(1).split('/')
+    }
+  },
   mounted () {
-    // 根据routerList自动生成面包屑
-    this.breadcrumbObj = breadcrumbGenerate(this.$store.state.routerList)
+    // 根据sideMenuList自动生成面包屑
+    this.breadcrumbObj = breadcrumbGenerate(this.sideMenuList)
   }
 }
 </script>

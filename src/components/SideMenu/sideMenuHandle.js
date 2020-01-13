@@ -8,19 +8,16 @@ function sideMenuGenerate (routeList) {
         let menu = {}
         if (routeItem.meta.isRoot || !routeItem.children) { // 开启根路由或不存在子路由时
           menu.isRoot = true
-          menu.hidden = routeItem.meta.hidden // 是否显示
+          menu.hidden = routeItem.meta.hidden || false // 是否显示
         } else {
           if (routeItem.children) { // 存在children 则存在二级菜单
             menu.group = []
             for (let item of routeItem.children) {
               let menuItem = {}
-              if (item.meta.subMenuTitle) { // 存在折叠子菜单
-                // console.log(item)
-              }
               if (!item.meta.groupTitle && !item.meta.subMenuTitle) { // 普通菜单
                 menuItem.index = item.path // 设置index
                 menuItem.title = item.meta.title // 设置title
-                menuItem.hidden = item.meta.hidden // 是否显示
+                menuItem.hidden = item.meta.hidden || false // 是否显示
               }
               menu.group.push(menuItem)
             }
@@ -33,7 +30,7 @@ function sideMenuGenerate (routeList) {
         sideMenuList.push(menu)
       }
     }
-    console.log(sideMenuList)
+    // console.log(sideMenuList)
     return sideMenuList
   } catch (e) {
     console.error('侧边栏生成失败!请检查全局路由信息!', e)

@@ -3,7 +3,7 @@
     <!-- 顶部导航 -->
     <Header/>
     <!-- 左侧导航栏 -->
-    <div class="layout-sider" :class="{ collapse: $store.state.isCollapse }">
+    <div class="layout-sider" :class="{ collapse: sideMenuStatus }">
       <SideMenu/>
     </div>
     <!-- 右侧内容区 -->
@@ -20,11 +20,13 @@
   </div>
 </template>
 <script>
+import { mixin } from '@utils/mixin'
 import Header from '@comp/Header/Header'
 import SideMenu from '@comp/SideMenu/SideMenu'
 import Breadcrumb from '@comp/Breadcrumb/Breadcrumb'
 import Footer from '@comp/Footer/Footer'
 export default {
+  mixins: [mixin],
   components: {
     Header,
     SideMenu,
@@ -51,7 +53,6 @@ export default {
     .main-content
       padding 0 10px
       min-height 100%
-      // border 1px solid red
   .collapse
     width 64px !important
 </style>

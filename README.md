@@ -1,5 +1,7 @@
 # my-vue-cli
 
+[![Build Status](https://travis-ci.com/aotianwinter/my-vue-cli.svg?branch=master)](https://travis-ci.com/aotianwinter/my-vue-cli)
+
 ## 项目简介
 
 > 该项目是基于`Vue + element-ui`搭建的中后台相关的标准化项目，用简单易用的方式搭建出极简的Vue标准化工程。

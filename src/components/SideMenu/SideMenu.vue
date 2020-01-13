@@ -1,12 +1,12 @@
 <template>
   <transition name="menu-fade-show">
     <div v-show="isShow" id="sidebar" :style="{ background: sideMenuBg }"
-    :class="{ collapse: $store.state.isCollapse }">
+    :class="{ collapse: sideMenuStatus }">
       <!-- 统一规划 -->
       <el-menu :default-active="activeMenu" class="sideMenu"
         :text-color="sideMenuTextColor" :active-text-color="sideMenuActiveColor"
         :background-color="sideMenuBg"
-        :collapse="$store.state.isCollapse"
+        :collapse="sideMenuStatus"
         unique-opened router
       >
         <template v-for="menu in sideMenuList">
@@ -36,7 +36,7 @@
       </el-menu>
       <div id="end">
         <i style="font-size: 30px;cursor: pointer" @click="changeIsCollapse"
-          :class="isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></i>
+          :class="sideMenuStatus ? 'el-icon-s-unfold' : 'el-icon-s-fold'"></i>
       </div>
     </div>
   </transition>
@@ -48,39 +48,34 @@ export default {
   mixins: [mixin],
   data () {
     return {
-      isShow: false,
-      sideMenuList: [] // 根据路由信息生成侧边栏
+      isShow: false
     }
   },
   computed: {
-    isCollapse () {
-      return this.$store.state.isCollapse
-    },
     activeMenu () {
-      return this.$store.state.activeMenuPath // 保证页面跳转后激活状态及时更新
+      return this.currentPath // 保证页面跳转后激活状态及时更新
     }
   },
   mounted () {
-    // 处理router信息并存储store 以供生成面包屑
-    this.$store.state.routerList = sideMenuGenerate(this.$router.options.routes)
-    this.sideMenuList = this.$store.state.routerList
-    this.isShow = true
+    // 处理router信息 生成侧边菜单组
+    this.$store.dispatch('getSideMenuList', sideMenuGenerate(this.$router.options.routes))
     this.autoChangeSideMenuCollapse()
+    this.isShow = true
   },
   methods: {
     changeIsCollapse () {
-      this.$store.commit('changeIsCollapse')
+      this.$store.dispatch('changeSideMenu')
     },
     autoChangeSideMenuCollapse () { // 窗口变更自动收缩侧边栏
       let x = window.matchMedia('(max-width: 1200px)')
       // 监听窗口变化 过窄收起侧边栏 过宽展开侧边栏
       const listenScreenWidth = (x) => {
         if (x.matches) { // 媒体查询
-          if (!this.$store.state.isCollapse) {
+          if (!this.sideMenuStatus) {
             this.changeIsCollapse()
           }
         } else {
-          if (this.$store.state.isCollapse) {
+          if (this.sideMenuStatus) {
             this.changeIsCollapse()
           }
         }

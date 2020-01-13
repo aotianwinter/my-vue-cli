@@ -1,3 +1,6 @@
+// ie polyfill
+// dev install @babel/polyfill 即可
+// import '@babel/polyfill'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
