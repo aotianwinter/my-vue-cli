@@ -3,7 +3,7 @@
     <div v-show="isShow" id="sidebar" :style="{ background: sideMenuBg }"
     :class="{ collapse: sideMenuStatus }">
       <!-- 统一规划 -->
-      <el-menu :default-active="activeMenu" class="sideMenu"
+      <el-menu :default-active="activeMenu" class="side-menu"
         :text-color="sideMenuTextColor" :active-text-color="sideMenuActiveColor"
         :background-color="sideMenuBg"
         :collapse="sideMenuStatus"
@@ -13,7 +13,7 @@
           <!-- 普通菜单 -->
           <template v-if="menu.isRoot">
             <el-menu-item v-if="!menu.hidden" :key="menu.index" :index="menu.index">
-              <i :class="menu.iconClass"></i>
+              <i :class="menu.iconClass" :style="{ color: menu.index === activeMenuIcon ? sideMenuActiveColor : '' }"></i>
               <span slot="title">{{ menu.title }}</span>
             </el-menu-item>
           </template>
@@ -21,7 +21,7 @@
           <template v-else>
             <el-submenu :key="menu.index" :index="menu.index">
               <template slot="title">
-                <i :class="menu.iconClass"></i>
+                <i :class="menu.iconClass" :style="{ color: menu.index === activeMenuIcon ? sideMenuActiveColor : '' }"></i>
                 <span>{{ menu.title }}</span>
               </template>
               <template v-for="item in menu.group">
@@ -52,7 +52,11 @@ export default {
     }
   },
   computed: {
+    activeMenuIcon () {
+      return '/' + this.currentPath.substr(1).split('/')[0]
+    },
     activeMenu () {
+      // console.log('/' + this.currentPath.substr(1).split('/')[0])
       return this.currentPath // 保证页面跳转后激活状态及时更新
     }
   },
@@ -96,7 +100,7 @@ export default {
   font-weight 400
   overflow hidden
   transition all 0.4s ease
-  .sideMenu
+  .side-menu
     text-align left
     border-right none
     &:not(.el-menu--collapse)
